@@ -35,5 +35,5 @@ Log axe comes out of the box already configured but it's highly encouraged that 
 | Config Name | Config Variable | Description | Default|
 |-------------|-----------------|-------------|--------|
 | Enable Log Axe Debugging | logAxeDebugging | This enables a fall back onto console.log that outputs the raw arguments you are logging including the options. This is useful to debug LogAxe. | false |
-| Tags | tags | If 'tags' is undefined or an empty array LogAxe will log everything. If tags is set to an array of tags LogAxe will only log those specified tags. | [] (Empty Array) |
+| Tags | tags | If 'tags' is undefined or an empty array LogAxe will log everything. If tags is set to an array of tags LogAxe will only log those specified tags. | Empty Array |
 |||||
