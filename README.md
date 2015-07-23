@@ -30,3 +30,7 @@ angular.module('myApp', [ ...., 'ngLogAxe']);
 
 ### Configure LogAxe
 
+Log axe comes out of the box already configured but it's highly encouraged that you adapt this config to your needs.
+
+| Config Name | Config Variable | Description | Default|
+|-------------|-----------------|-------------|--------|
