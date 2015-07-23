@@ -10,7 +10,7 @@ Simplify and create meaningful logs in your AngularJS projects with Log Axe. Fea
 LogAxe comes about trying to log the crap out of my Angular projects which makes my logs look like a forest you can't see through. By cutting out things you don't need to see and giving some extra key details on the things you are seeing, I hope to make my debugging easier and more managable in production and development environments. 
 
 ### Version
-0.1
+0.0.1
 
 ### Installation
 

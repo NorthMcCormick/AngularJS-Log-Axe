@@ -1,0 +1,10 @@
+{
+  "name": "angularjs-logaxe",
+  "description": "AngularJS Log Module",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  }
+}
