@@ -51,3 +51,18 @@ $log.debug({
 	tags : ['http']
 }, "Testing");
 ```
+
+If LogAxe has no tags configured this log will always be displayed. If LogAxe is set to a different set of tags however it will not:
+
+```
+$log.setTags(['notHttp', 'http_results']);
+```
+
+When your application is run, the "Testing" log will not be shown. Set your tag to http however:
+
+```
+$log.setTags(['http', 'http_results']);
+```
+
+And that log will be shown.
+
