@@ -37,3 +37,17 @@ Log axe comes out of the box already configured but it's highly encouraged that 
 | Enable Log Axe Debugging | logAxeDebugging | This enables a fall back onto console.log that outputs the raw arguments you are logging including the options. This is useful to debug LogAxe. | false |
 | Tags | tags | If 'tags' is undefined or an empty array LogAxe will log everything. If tags is set to an array of tags LogAxe will only log those specified tags. | Empty Array |
 |||||
+
+### Log Axe Debugging
+
+LogAxe is not perfect, if you need to debug why LogAxe is not picking up an argument or showing something weird you can enable deeper debug logs that fall back and use console.log().
+
+### Tags
+
+Tags are a really powerful feature of LogAxe. Tags enable you to show specific logs based on the content that you say they are. For example:
+
+```
+$log.debug({
+	tags : ['http']
+}, "Testing");
+```
