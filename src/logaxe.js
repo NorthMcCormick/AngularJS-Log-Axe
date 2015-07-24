@@ -14,8 +14,6 @@ ngLogAxe.config(['$provide', function($provide) {
 	time - time stamp
 	date - just the date
 	timedate - both
-	controller - current controller
-	function - function
 */
 
 ngLogAxe.value('ngLogAxeConfig', {
@@ -24,15 +22,16 @@ ngLogAxe.value('ngLogAxeConfig', {
 	prefix : ['la_time'],
 	production : true,
 	hideOnProduction : [],
-	traceParent : ''
+	traceParent : '',
+	clearTraceOnStateChange : true
 });
 
 ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 
-	function returnLogArray(args) {
+	function returnLogArray(incomingArgs) {
 		var newArguments = [];
+		var args = Array.prototype.slice.call(incomingArgs);
 		var options = args[0];
-
 		/*
 			options.prefix = string or array of options
 			options.suffix = string or array of options
@@ -67,8 +66,10 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 				var prefix = '';
 
 				if(ngLogAxeConfig.logAxeDebugging == true) console.log(Object.prototype.toString.call(ngLogAxeConfig.prefix));
+				if(ngLogAxeConfig.logAxeDebugging == true) console.log("Args Type", Object.prototype.toString.call(args));
 				if(ngLogAxeConfig.logAxeDebugging == true) console.log(ngLogAxeConfig.prefix);
 				if(ngLogAxeConfig.logAxeDebugging == true) console.log(ngLogAxeConfig);
+				if(ngLogAxeConfig.logAxeDebugging == true) console.log(options);
 
 				switch(Object.prototype.toString.call(ngLogAxeConfig.prefix)) {
 					case '[object Array]':
@@ -108,24 +109,38 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 					break;
 				}
 
+				var hasTaceParent = false;
+
 				if(options.traceParent !== undefined) {
-					prefix += options.traceParent;
+					prefix += ' ' + options.traceParent;
+					hasTaceParent = true;
 					if(ngLogAxeConfig.logAxeDebugging == true) console.log("Trace Parent (from opts): ", options.traceParent);
 				}else{
 					if(ngLogAxeConfig.traceParent !== '') {
-						prefix += ngLogAxeConfig.traceParent;
+						prefix += ' ' + ngLogAxeConfig.traceParent;
+						hasTaceParent = true;
 						if(ngLogAxeConfig.logAxeDebugging == true) console.log("Trace Parent (from config): ", ngLogAxeConfig.traceParent);
 					}
 				}
 
 
 
+				if(options.traceCaller !== undefined) {
+					if(options.traceCaller !== '') {
+						if(hasTaceParent) {
+							prefix += '::';
+						}
+
+						prefix += options.traceCaller;
+					}
+				}
+
 				if(ngLogAxeConfig.logAxeDebugging == true) console.log("Prefix", prefix);
 				if(ngLogAxeConfig.logAxeDebugging == true) console.log("Prefix Raw", ngLogAxeConfig.prefix);
 
 				if(args[1] !== undefined) {
 					if(typeof args[1] === 'string') {
-						args[1] = prefix + '-' + args[1];
+						args[1] = prefix + ' - ' + args[1];
 					}else{
 						args.splice(1, 0, prefix);
 					}
@@ -174,11 +189,15 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 					obj.traceParent = '';
 				}
 
+				if(obj.clearTraceOnStateChange == undefined) {
+					obj.clearTraceOnStateChange = true;
+				}
+
 				ngLogAxeConfig = obj;
 				$delegate.info("Log Axe Configured");
 			},
 			setTraceParent : function(newTraceParent) {
-				ngLogAxeConfig = newTraceParent;
+				ngLogAxeConfig.traceParent = newTraceParent;
 			},
 			setTags : function(tags) {
 				ngLogAxeConfig.tags = tags;
