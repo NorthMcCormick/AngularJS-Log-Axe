@@ -36,6 +36,7 @@ Log axe comes out of the box already configured but it's highly encouraged that 
 |-------------|-----------------|-------------|--------|
 | Enable Log Axe Debugging | logAxeDebugging | This enables a fall back onto console.log that outputs the raw arguments you are logging including the options. This is useful to debug LogAxe. | false |
 | Tags | tags | If 'tags' is undefined or an empty array LogAxe will log everything. If tags is set to an array of tags LogAxe will only log those specified tags. | Empty Array |
+| Prefix | prefix | Define a global string or array of elements to include before each log's arguments. | Array with one element: 'time' |
 |||||
 
 ### Log Axe Debugging
@@ -66,3 +67,6 @@ $log.setTags(['http', 'http_results']);
 
 And that log will be shown.
 
+### Prefixing
+
+Prefixing is an easy way to pin point where and when your logs are coming in. The prefix property can be set globally and set per-log. The default global is ```['time']```

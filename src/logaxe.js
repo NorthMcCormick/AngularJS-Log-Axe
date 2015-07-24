@@ -10,9 +10,18 @@ ngLogAxe.config(['$provide', function($provide) {
 	Config Object
 */
 
+/* Prefix Types
+	time - time stamp
+	date - just the date
+	timedate - both
+	controller - current controller
+	function - function
+*/
+
 ngLogAxe.value('ngLogAxeConfig', {
 	logAxeDebugging : false,
-	tags : []
+	tags : [],
+	prefix : ['time']
 });
 
 ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
@@ -32,7 +41,7 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 		var shouldLog = false;
 
 		if(options !== undefined) {
-			if(ngLogAxeConfig.tags !== undefined) {
+			if(ngLogAxeConfig.tags !== undefined) { // Tags
 				if(ngLogAxeConfig.tags.length > 0) {
 					if(options.tags !== undefined) {
 
@@ -50,6 +59,61 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 			}else{
 				shouldLog = true;
 			}
+
+			if(ngLogAxeConfig.prefix !== null && ngLogAxeConfig.prefix !== '') {
+				var prefix = '';
+
+				if(ngLogAxeConfig.logAxeDebugging == true) console.log(Object.prototype.toString.call(ngLogAxeConfig.prefix));
+				if(ngLogAxeConfig.logAxeDebugging == true) console.log(ngLogAxeConfig.prefix);
+				if(ngLogAxeConfig.logAxeDebugging == true) console.log(ngLogAxeConfig);
+
+				switch(Object.prototype.toString.call(ngLogAxeConfig.prefix)) {
+					case '[object Array]':
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("Object Array Prefix Type");
+
+						function formatDate(dateObject) {
+							return (dateObject.getFullYear() + "-" + dateObject.getMonth() + 1) + "-" + dateObject.getDate();
+						}
+
+						ngLogAxeConfig.prefix.forEach(function(prefixType, ind) {
+							switch(prefixType) {
+								case 'time':
+									prefix += new Date().toTimeString();
+								break;
+
+								case 'date':
+									prefix += formatDate(new Date());
+								break;
+							}
+
+							if(ind !== ngLogAxeConfig.prefix.length-1) {
+								prefix += '|';
+							}
+						})
+					break;
+					case '[object String]':
+						prefix = ngLogAxeConfig.prefix;
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("String Prefix Type");
+					break;
+					default: 
+						prefix = 'Invalid Prefix Type';
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("Invalid Prefix Type");
+					break;
+				}
+
+				if(ngLogAxeConfig.logAxeDebugging == true) console.log("Prefix", prefix);
+				if(ngLogAxeConfig.logAxeDebugging == true) console.log("Prefix Raw", ngLogAxeConfig.prefix);
+
+				if(args[1] !== undefined) {
+					if(typeof args[1] === 'string') {
+						args[1] = prefix + '-' + args[1];
+					}else{
+						args.splice(1, 0, prefix);
+					}
+				}else{
+					args[1] == prefix;
+				}
+			}
 		}
 
 		if(shouldLog) {
@@ -66,6 +130,19 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 	return function($delegate) {
 		return {
 			setConfig : function(obj) {
+
+				if(obj.logAxeDebugging == undefined) {
+					obj.logAxeDebugging = false;
+				}
+
+				if(obj.tags == undefined) {
+					obj.tags = [];
+				}
+
+				if(obj.prefix == undefined) {
+					obj.prefix = ['time'];
+				}
+
 				ngLogAxeConfig = obj;
 				$delegate.info("Log Axe Configured");
 			},
