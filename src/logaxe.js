@@ -21,7 +21,10 @@ ngLogAxe.config(['$provide', function($provide) {
 ngLogAxe.value('ngLogAxeConfig', {
 	logAxeDebugging : false,
 	tags : [],
-	prefix : ['time']
+	prefix : ['la_time'],
+	production : true,
+	hideOnProduction : [],
+	traceParent : ''
 });
 
 ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
@@ -77,12 +80,16 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 
 						ngLogAxeConfig.prefix.forEach(function(prefixType, ind) {
 							switch(prefixType) {
-								case 'time':
+								case 'la_time':
 									prefix += new Date().toTimeString();
 								break;
 
-								case 'date':
+								case 'la_date':
 									prefix += formatDate(new Date());
+								break;
+
+								default:
+									prefix += prefixType;
 								break;
 							}
 
@@ -100,6 +107,16 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 						if(ngLogAxeConfig.logAxeDebugging == true) console.log("Invalid Prefix Type");
 					break;
 				}
+
+				if(options.traceParent !== undefined) {
+					prefix += options.traceParent;
+				}else{
+					if(ngLogAxeConfig.traceParent !== '') {
+						prefix += ngLogAxeConfig.traceParent;
+					}
+				}
+
+
 
 				if(ngLogAxeConfig.logAxeDebugging == true) console.log("Prefix", prefix);
 				if(ngLogAxeConfig.logAxeDebugging == true) console.log("Prefix Raw", ngLogAxeConfig.prefix);
@@ -140,49 +157,84 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 				}
 
 				if(obj.prefix == undefined) {
-					obj.prefix = ['time'];
+					obj.prefix = ['la_time'];
+				}
+
+				if(obj.production == undefined) {
+					obj.production = true;
+				}
+
+				if(obj.hideOnProduction == undefined) {
+					obj.hideOnProduction = [];
+				}
+
+				if(obj.traceParent == undefined) {
+					traceParent = '';
 				}
 
 				ngLogAxeConfig = obj;
 				$delegate.info("Log Axe Configured");
+			},
+			setTraceParent : function(newTraceParent) {
+				ngLogAxeConfig = newTraceParent;
 			},
 			setTags : function(tags) {
 				ngLogAxeConfig.tags = tags;
 				$delegate.info("Log Axe Tags Set");
 			},
 			log : function() {
-				var args = returnLogArray(arguments);
-				if(args !== false) {
-					$delegate.log.apply(null, args);
-					if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+				try {
+					var args = returnLogArray(arguments);
+					if(args !== false) {
+						$delegate.log.apply(null, args);
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+					}
+				} catch(e) {
+					console.error("LogAxe Exception: " + e);
 				}
 			},
 			info : function() {
-				var args = returnLogArray(arguments);
-				if(args !== false) {
-					$delegate.info.apply(null, args);
-					if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+				try {
+					var args = returnLogArray(arguments);
+					if(args !== false) {
+						$delegate.info.apply(null, args);
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+					}
+				}catch(e) {
+					console.error("LogAxe Exception: " + e);
 				}
 			},
 			error : function() {
-				var args = returnLogArray(arguments);
-				if(args !== false) {
-					$delegate.error.apply(null, args);
-					if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+				try {
+					var args = returnLogArray(arguments);
+					if(args !== false) {
+						$delegate.error.apply(null, args);
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+					}
+				}catch(e) {
+					console.error("LogAxe Exception: " + e);
 				}
 			},
 			warn : function() {
-				var args = returnLogArray(arguments);
-				if(args !== false) {
-					$delegate.warn.apply(null, args);
-					if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+				try {
+					var args = returnLogArray(arguments);
+					if(args !== false) {
+						$delegate.warn.apply(null, args);
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+					}
+				}catch(e) {
+					console.error("LogAxe Exception: " + e);
 				}
 			},
 			debug : function() {
-				var args = returnLogArray(arguments);
-				if(args !== false) {
-					$delegate.debug.apply(null, args);
-					if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+				try {
+					var args = returnLogArray(arguments);
+					if(args !== false) {
+						$delegate.debug.apply(null, args);
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+					}
+				}catch(e) {
+					console.error("LogAxe Exception: " + e);
 				}
 			}
 		}
