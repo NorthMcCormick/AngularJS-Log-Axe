@@ -86,4 +86,5 @@ Here is a table of the possible elements:
 |--------------|--------|-------------|-------|
 | Time Stamp | "time" | Displays the current time w/ time zone for accuracy | 10:42:16 GMT-0600 (MDT) |
 | Date Stamp | "date" | Displays the current date in a human readable format. | 2015-61-24 |
-||||
+| Date/Time Stamp | "datetime" | Displays time and date stamp |  |
+|||||
