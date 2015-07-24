@@ -110,9 +110,11 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 
 				if(options.traceParent !== undefined) {
 					prefix += options.traceParent;
+					if(ngLogAxeConfig.logAxeDebugging == true) console.log("Trace Parent (from opts): ", options.traceParent);
 				}else{
 					if(ngLogAxeConfig.traceParent !== '') {
 						prefix += ngLogAxeConfig.traceParent;
+						if(ngLogAxeConfig.logAxeDebugging == true) console.log("Trace Parent (from config): ", ngLogAxeConfig.traceParent);
 					}
 				}
 
@@ -169,7 +171,7 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 				}
 
 				if(obj.traceParent == undefined) {
-					traceParent = '';
+					obj.traceParent = '';
 				}
 
 				ngLogAxeConfig = obj;
