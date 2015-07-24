@@ -69,4 +69,19 @@ And that log will be shown.
 
 ### Prefixing
 
-Prefixing is an easy way to pin point where and when your logs are coming in. The prefix property can be set globally and set per-log. The default global is ```['time']```
+Prefixing is an easy way to pin point where and when your logs are coming in. The prefix property can be set globally and set per-log. The default global is ```['time']```. The value of prefix can be an array of strings or a single string.
+
+If prefix is just "My Prefix" then each log will be displayed as
+```
+My Prefix - Your Log Arguments
+```
+If prefix is an array like ```['time']``` then each log will be displayed as
+```
+10:42:16 GMT-0600 (MDT) - Your Log Arguments
+```
+
+Here is a table of the possible elements:
+| Element Type | String | Description | Value |
+-----------------------------------------------
+| Time Stamp | "time" | Displays the current time w/ time zone for accuracy | 10:42:16 GMT-0600 (MDT) |
+| Date Stamp | "date" | Displays the current date in a human readable format. | 2015-61-24 |
