@@ -45,6 +45,26 @@ Log axe comes out of the box already configured but it's highly encouraged that 
 
 LogAxe is not perfect, if you need to debug why LogAxe is not picking up an argument or showing something weird you can enable deeper debug logs that fall back and use console.log().
 
+### Pre/Post Hook
+
+Hooks for the logs give you the option to extend what happens when an error is thrown. Rather than having to call a bunch of different functions you can do them before and after the log to gather data, email someone, or even just change something in the UI.
+
+Hooks are defined in the individual log options like so:
+```
+$log.debug({
+	preHook : function() {
+		// Your hook code here
+	}, 
+	postHook : function() {
+		// Your hook code here
+	}
+})
+```
+
+As you can imagine the pre is called before any logging happens and the post happens after all the logging. 
+
+Note: The hooks will NOT be called if the log is not eligible for logging because the tags are not active or other reasons.
+
 ### Tags
 
 Tags are a really powerful feature of LogAxe. Tags enable you to show specific logs based on the content that you say they are. For example:

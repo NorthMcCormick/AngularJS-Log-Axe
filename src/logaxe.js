@@ -166,6 +166,13 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 		}
 
 		if(shouldLog) {
+
+			if(options.preHook !== undefined) {
+				if(Object.prototype.toString.call(options.preHook) == '[object Function]') {
+					options.preHook();
+				}
+			}
+
 			for(var i = 1; i < args.length; i++) {
 				newArguments.push(args[i]);
 			}
@@ -232,6 +239,12 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 					if(args !== false) {
 						$delegate.log.apply(null, args);
 						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+
+						if(arguments[0].preHook !== undefined) {
+							if(Object.prototype.toString.call(arguments[0].postHook) == '[object Function]') {
+								arguments[0].postHook();
+							}
+						}
 					}
 				} catch(e) {
 					console.error("LogAxe Exception: " + e);
@@ -243,6 +256,12 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 					if(args !== false) {
 						$delegate.info.apply(null, args);
 						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+
+						if(arguments[0].preHook !== undefined) {
+							if(Object.prototype.toString.call(arguments[0].postHook) == '[object Function]') {
+								arguments[0].postHook();
+							}
+						}
 					}
 				}catch(e) {
 					console.error("LogAxe Exception: " + e);
@@ -254,6 +273,12 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 					if(args !== false) {
 						$delegate.error.apply(null, args);
 						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+
+						if(arguments[0].preHook !== undefined) {
+							if(Object.prototype.toString.call(arguments[0].postHook) == '[object Function]') {
+								arguments[0].postHook();
+							}
+						}
 					}
 				}catch(e) {
 					console.error("LogAxe Exception: " + e);
@@ -265,6 +290,12 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 					if(args !== false) {
 						$delegate.warn.apply(null, args);
 						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+
+						if(arguments[0].preHook !== undefined) {
+							if(Object.prototype.toString.call(arguments[0].postHook) == '[object Function]') {
+								arguments[0].postHook();
+							}
+						}
 					}
 				}catch(e) {
 					console.error("LogAxe Exception: " + e);
@@ -276,6 +307,12 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 					if(args !== false) {
 						$delegate.debug.apply(null, args);
 						if(ngLogAxeConfig.logAxeDebugging == true) console.log("LOGAXE: ", arguments);
+
+						if(arguments[0].preHook !== undefined) {
+							if(Object.prototype.toString.call(arguments[0].postHook) == '[object Function]') {
+								arguments[0].postHook();
+							}
+						}
 					}
 				}catch(e) {
 					console.error("LogAxe Exception: " + e);
