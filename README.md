@@ -36,6 +36,7 @@ Log axe comes out of the box already configured but it's highly encouraged that 
 |-------------|-----------------|-------------|--------|
 | Enable Log Axe Debugging | logAxeDebugging | This enables a fall back onto console.log that outputs the raw arguments you are logging including the options. This is useful to debug LogAxe. | false |
 | Tags | tags | If 'tags' is undefined or an empty array LogAxe will log everything. If tags is set to an array of tags LogAxe will only log those specified tags. | Empty Array |
+| Hidden Tags | hideTags | Any tags in this array will be hidden. Takes priority over the shown tags property.| Empty Array |
 | Prefix | prefix | Define a global string or array of elements to include before each log's arguments. | Array with one element: 'time' |
 | Clear Trace Parent On State Change | clearTraceOnStateChange | Wipe the trace parent prefix on state change automatically | true |
 |||||
@@ -67,6 +68,27 @@ $log.setTags(['http', 'http_results']);
 ```
 
 And that log will be shown.
+
+### Hidden Tags
+
+Hidden tags are great for narrowing down your scope on the fly. You can set hidden tags with 
+```
+$log.setHiddenTags([]);
+```
+Or in the configuration variable using ```hideTags```
+
+Hidden tags take priority over the shown tags that you define. For example:
+
+```
+$log.setTags(['b']);
+$log.setHiddenTags(['c']);
+
+$log.warn({ tags:['a','b','c']}, "A B C");
+$log.warn({ tags:['a','b']}, "A B");
+$log.warn({ tags:['a']}, "A");
+```
+
+This will only return 'A B'.
 
 ### Prefixing
 

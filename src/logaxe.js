@@ -19,6 +19,7 @@ ngLogAxe.config(['$provide', function($provide) {
 ngLogAxe.value('ngLogAxeConfig', {
 	logAxeDebugging : false,
 	tags : [],
+	hideTags : [],
 	prefix : ['la_time'],
 	production : true,
 	hideOnProduction : [],
@@ -60,6 +61,20 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 				}
 			}else{
 				shouldLog = true;
+			}
+
+			if(ngLogAxeConfig.hideTags !== undefined) { // Tags
+				if(ngLogAxeConfig.hideTags.length > 0) {
+					if(options.tags !== undefined) {
+						options.tags.forEach(function(tag) {
+							ngLogAxeConfig.hideTags.forEach(function(masterTag) {
+								if(tag == masterTag) {
+									shouldLog = false;
+								}
+							})
+						})
+					}
+				}
 			}
 
 			if(ngLogAxeConfig.prefix !== null && ngLogAxeConfig.prefix !== '') {
@@ -173,6 +188,10 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 					obj.tags = [];
 				}
 
+				if(obj.hideTags == undefined) {
+					obj.hideTags = [];
+				}
+
 				if(obj.prefix == undefined) {
 					obj.prefix = ['la_time'];
 				}
@@ -194,14 +213,18 @@ ngLogAxe.factory("logAxeFactory", ['ngLogAxeConfig', function(ngLogAxeConfig) {
 				}
 
 				ngLogAxeConfig = obj;
-				$delegate.info("Log Axe Configured");
+				if(ngLogAxeConfig.logAxeDebugging == true) console.info("Log Axe Configured");
 			},
 			setTraceParent : function(newTraceParent) {
 				ngLogAxeConfig.traceParent = newTraceParent;
 			},
 			setTags : function(tags) {
 				ngLogAxeConfig.tags = tags;
-				$delegate.info("Log Axe Tags Set");
+				if(ngLogAxeConfig.logAxeDebugging == true) console.info("Log Axe Tags Set");
+			},
+			setHiddenTags : function(tags) {
+				ngLogAxeConfig.hideTags = tags;
+				if(ngLogAxeConfig.logAxeDebugging == true) console.info("Log Axe Hidden Tags Set");
 			},
 			log : function() {
 				try {
