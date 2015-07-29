@@ -1,9 +1,9 @@
 # AngularJS Log Axe
 
 Simplify and create meaningful logs in your AngularJS projects with Log Axe. Features planned/current:
-  - Log Categories
+  - Log Tags
   - Default/Custom log prefix and suffix
-  - Persistent log objects
+  - Post/pre hooks
   - Run Time
   - More......?
 
